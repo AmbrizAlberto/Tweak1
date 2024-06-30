@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <SpringBoard/SpringBoard.h>
+#import <NotificationCenter/NotificationCenter.h>
 
 // Hook para modificar el controlador principal del Centro de Notificaciones
 %hook NCNotificationListViewController
