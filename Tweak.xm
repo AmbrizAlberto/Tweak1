@@ -1,34 +1,59 @@
-/* How to Hook with Logos
-Hooks are written with syntax similar to that of an Objective-C @implementation.
-You don't need to #include <substrate.h>, it will be done automatically, as will
-the generation of a class list and an automatic constructor.
+#import <UIKit/UIKit.h>
+#import <SpringBoard/SpringBoard.h>
 
-%hook ClassName
+// Hook para modificar el controlador principal del Centro de Notificaciones
+%hook NCNotificationListViewController
 
-// Hooking a class method
-+ (id)sharedInstance {
-	return %orig;
+- (void)viewDidLoad {
+    %orig;
+
+    // Crear el efecto de desenfoque
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    blurEffectView.frame = self.view.bounds;
+    blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    // Añadir el efecto de desenfoque como fondo
+    [self.view insertSubview:blurEffectView atIndex:0];
+
+    // Crear las pestañas
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Today", @"Notifications"]];
+    segmentedControl.frame = CGRectMake(10, 40, self.view.frame.size.width - 20, 30);
+    [segmentedControl addTarget:self action:@selector(segmentChanged:) forControlEvents:UIControlEventValueChanged];
+    segmentedControl.selectedSegmentIndex = 0; // Selecciona la primera pestaña por defecto
+
+    // Añadir las pestañas a la vista
+    [self.view addSubview:segmentedControl];
+
+    // Crear contenedores para las diferentes secciones
+    UIView *todayView = [[UIView alloc] initWithFrame:self.view.bounds];
+    todayView.backgroundColor = [UIColor clearColor];
+    todayView.tag = 1;
+    
+    UIView *notificationsView = [[UIView alloc] initWithFrame:self.view.bounds];
+    notificationsView.backgroundColor = [UIColor clearColor];
+    notificationsView.tag = 2;
+
+    // Añadir los contenedores a la vista
+    [self.view addSubview:todayView];
+    [self.view addSubview:notificationsView];
+
+    // Mostrar solo la vista de hoy inicialmente
+    todayView.hidden = NO;
+    notificationsView.hidden = YES;
 }
 
-// Hooking an instance method with an argument.
-- (void)messageName:(int)argument {
-	%log; // Write a message about this call, including its class, name and arguments, to the system log.
+- (void)segmentChanged:(UISegmentedControl *)sender {
+    UIView *todayView = [self.view viewWithTag:1];
+    UIView *notificationsView = [self.view viewWithTag:2];
 
-	%orig; // Call through to the original function with its original arguments.
-	%orig(nil); // Call through to the original function with a custom argument.
-
-	// If you use %orig(), you MUST supply all arguments (except for self and _cmd, the automatically generated ones.)
+    if (sender.selectedSegmentIndex == 0) {
+        todayView.hidden = NO;
+        notificationsView.hidden = YES;
+    } else {
+        todayView.hidden = YES;
+        notificationsView.hidden = NO;
+    }
 }
 
-// Hooking an instance method with no arguments.
-- (id)noArguments {
-	%log;
-	id awesome = %orig;
-	[awesome doSomethingElse];
-
-	return awesome;
-}
-
-// Always make sure you clean up after yourself; Not doing so could have grave consequences!
 %end
-*/
