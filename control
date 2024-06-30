@@ -1,9 +1,9 @@
-Package: com.AlAmbrizDev.Tweak1
+Package: com.alambrizdev.tweak1
 Name: Tweak1
 Depends: mobilesubstrate
 Version: 0.0.1
 Architecture: iphoneos-arm
 Description: Un tweak que replica el estilo del Centro de Notificaciones de iOS 9 en iOS 12.
-Maintainer: Al Dev albertpoambez@icloud.com
-Author: Tu Nombre albertpoambez@icloud.com
+Maintainer: Al Dev <albertpoambez@icloud.com>
+Author: Al Dev <albertpoambez@icloud.com>
 Section: Tweaks
