@@ -6,7 +6,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = Tweak1
 
-MyTweak_FILES = Tweak.xm
-MyTweak_CFLAGS = -fobjc-arc
+Tweak1_FILES = Tweak.xm
+Tweak1_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
