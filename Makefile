@@ -1,12 +1,12 @@
-TARGET := iphone:clang:latest:7.0
-INSTALL_TARGET_PROCESSES = 	
-
+ARCHS = arm64 arm64e
+TARGET = iphone:clang:latest:12.0
+THEOS_DEVICE_IP = 192.168.1.75
 
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = Tweak1
 
-Tweak1_FILES = Tweak.x
-Tweak1_CFLAGS = -fobjc-arc
+MyTweak_FILES = Tweak.xm
+MyTweak_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
