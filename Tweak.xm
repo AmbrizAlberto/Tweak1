@@ -14,15 +14,15 @@
     if ([self respondsToSelector:@selector(view)]) {
         NSLog(@"[Tweak1] self responds to view");
 
-        // Crear el efecto de desenfoque
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        blurEffectView.frame = self.view.bounds;
-        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        // Eliminar el efecto de desenfoque (opcional, si no deseas el efecto de desenfoque)
+        for (UIView *subview in self.view.subviews) {
+            if ([subview isKindOfClass:[UIVisualEffectView class]]) {
+                [subview removeFromSuperview];
+            }
+        }
 
-        // Añadir el efecto de desenfoque como fondo
-        [self.view insertSubview:blurEffectView atIndex:0];
-        NSLog(@"[Tweak1] Blur effect added");
+        // Crear un fondo estilo iOS 9.3.5
+        self.view.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0]; // Ajusta el color según sea necesario
 
         // Crear las pestañas y añadirlas a la vista
         UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Today", @"Notifications"]];
@@ -32,40 +32,28 @@
         [self.view addSubview:segmentedControl];
         NSLog(@"[Tweak1] Segmented control added");
 
-        // Crear contenedores para las diferentes secciones
-        UIView *todayView = [[UIView alloc] initWithFrame:self.view.bounds];
-        todayView.backgroundColor = [UIColor clearColor];
-        todayView.tag = 1;
+        // Crear contenedor para las diferentes secciones (solo un contenedor en este caso)
+        UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height - 80)];
+        contentView.backgroundColor = [UIColor clearColor];
+        [self.view addSubview:contentView];
+        NSLog(@"[Tweak1] Content view added");
 
-        UIView *notificationsView = [[UIView alloc] initWithFrame:self.view.bounds];
-        notificationsView.backgroundColor = [UIColor clearColor];
-        notificationsView.tag = 2;
+        // Simular la apariencia de iOS 9.3.5 - Puedes personalizar este contenido según lo necesites
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, contentView.frame.size.width - 40, 40)];
+        label.text = @"Content styled like iOS 9.3.5";
+        label.textAlignment = NSTextAlignmentCenter;
+        [contentView addSubview:label];
+        NSLog(@"[Tweak1] Content styled");
 
-        // Añadir los contenedores a la vista
-        [self.view addSubview:todayView];
-        [self.view addSubview:notificationsView];
-        NSLog(@"[Tweak1] Views added");
-
-        // Mostrar solo la vista de hoy inicialmente
-        todayView.hidden = NO;
-        notificationsView.hidden = YES;
+        // Mostrar solo la vista inicialmente
+        contentView.hidden = NO;
         NSLog(@"[Tweak1] Initial view set");
     }
 }
 
 - (void)segmentChanged:(UISegmentedControl *)sender {
-    UIView *todayView = [self.view viewWithTag:1];
-    UIView *notificationsView = [self.view viewWithTag:2];
-
-    if (sender.selectedSegmentIndex == 0) {
-        todayView.hidden = NO;
-        notificationsView.hidden = YES;
-        NSLog(@"[Tweak1] Today view shown");
-    } else {
-        todayView.hidden = YES;
-        notificationsView.hidden = NO;
-        NSLog(@"[Tweak1] Notifications view shown");
-    }
+    // Implementa el cambio de segmento según sea necesario
+    NSLog(@"[Tweak1] Segment changed: %ld", (long)sender.selectedSegmentIndex);
 }
 
 %end
