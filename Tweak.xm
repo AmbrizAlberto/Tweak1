@@ -36,7 +36,7 @@
         UIView *todayView = [[UIView alloc] initWithFrame:self.view.bounds];
         todayView.backgroundColor = [UIColor clearColor];
         todayView.tag = 1;
-        
+
         UIView *notificationsView = [[UIView alloc] initWithFrame:self.view.bounds];
         notificationsView.backgroundColor = [UIColor clearColor];
         notificationsView.tag = 2;
